@@ -29,22 +29,24 @@ while [ $# -gt 0 ]; do
         shift
 done
 
+USER="jboss"
+
 COMMAND_CLI="/subsystem=messaging/hornetq-server=default/jms-queue=${QUEUE}/:read-attribute(name=message-count)"
 COMMAND_JBOSS="/jboss/jboss-as-7.1.1/bin/jboss-cli.sh --connect controller=${SERVER}:${SERVER_PORT} --command=\"${COMMAND_CLI}\" "
 
 
-COMMAND=`sudo su - jboss -c "${COMMAND_JBOSS}"| awk '$1=="\"result\"" {print $3}'|sed 's/[^0-9]*//g' `
+COMMAND=`sudo su - ${USER} -c "${COMMAND_JBOSS}"| awk '$1=="\"result\"" {print $3}'|sed 's/[^0-9]*//g' `
 RESULT=($COMMAND)
 
 if [ "${RESULT}" = "" ]; then
     exit 2;
 else if [ ${RESULT} -gt ${CRI} ]; then
-        echo "Critical: Fila ${QUEUE} em acumulo qtde: ${RESULT} | Quantidade=${RESULT}"
+        echo "Critical: Queue ${QUEUE} amount of message: ${RESULT} | Amount=${RESULT}"
         exit 2;
      else if [ ${RESULT} -gt ${WAR} ]; then
-            echo "Warning: Fila ${QUEUE} qtde: ${RESULT} | Quantidade=${RESULT}"
+            echo "Warning: Queue ${QUEUE} amount of  message: ${RESULT} | Amount=${RESULT}"
             exit 1;
-          else echo "OK: Fila ${QUEUE} qtde: ${RESULT} | Quantidade=${RESULT}"
+          else echo "OK: Queue ${QUEUE} amount of message: ${RESULT} | Amount=${RESULT}"
                exit 0;
           fi
      fi
