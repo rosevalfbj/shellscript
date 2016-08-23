@@ -28,7 +28,7 @@ if [ -z "${APPLICATION}" ] || [ -z "${WARN}" ] || [ -z "${CRIT}" ] ; then
 fi
 
 CONTEXT_APP="/${APPLICATION}/"
-PATH_LOG="/jboss/jboss-eap-5.1/jboss-as/server/maestro-visao/log"
+PATH_LOG="/jboss/jboss-4.2.3.GA/server/default/log"
 FILE_LOG="localhost_access_log."
 PATH_LASTLINE_LOG="/usr/local/nagios/libexec"
 FILE_CTRL_LOG="${APPLICATION}_ctrl"
@@ -52,6 +52,11 @@ done
 AMOUNT_LINE_APP=`cat ${PATH_LASTLINE_LOG}/${FILE_AVG_LOG} | grep -i "${CONTEXT_APP}" | wc -l`
 AMOUNT_LINE_OTHER=`cat ${PATH_LASTLINE_LOG}/${FILE_AVG_LOG} | grep -v "${CONTEXT_APP}" | wc -l`
 TOTAL_LINE_AFTER=`cat ${PATH_LOG}/${FILE_LOG}${DATE}.log | wc -l`
+
+if [ ${AMOUNT_LINE_APP} -eq 0 ]; then
+        echo "JMX OK: ${APPLICATION} AVG_RespTime=${AMOUNT_LINE_APP}ms | AVG_RespTime=${AMOUNT_LINE_APP};Warn=${WARN};Critical=${CRIT}"
+        exit 0
+fi
 
 #### Reset Values
 > ${PATH_LASTLINE_LOG}/${FILE_AVG_LOG}
