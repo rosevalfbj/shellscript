@@ -55,7 +55,7 @@ TOTAL_LINE_AFTER=`cat ${PATH_LOG}/${FILE_LOG}${DATE}.log | wc -l`
 
 if [ ${AMOUNT_LINE_APP} -eq 0 ]; then
         echo "JMX OK: ${APPLICATION} AVG_RespTime=${AMOUNT_LINE_APP}ms | AVG_RespTime=${AMOUNT_LINE_APP};Warn=${WARN};Critical=${CRIT}"
-        exit 0
+        exit 0;
 fi
 
 #### Reset Values
