@@ -36,7 +36,7 @@ FILE_AVG_LOG="${APPLICATION}_avg"
 CALC_AVG_LOG="${APPLICATION}_calc"
 DATE=`date +%Y-%m-%d`
 TIMESTAMP=`date +%Y-%m-%d_%H:%M:%S`
-
+ 
 if [ `tail -n 1 ${PATH_LASTLINE_LOG}/${FILE_CTRL_LOG}| wc -l` == '0' ]; then
 	TOTAL_LINE=0
 else TOTAL_LINE=`tail -n 1 ${PATH_LASTLINE_LOG}/${FILE_CTRL_LOG} | awk -F ";" '{print $4}'| awk -F ":" '{print $2}'`
